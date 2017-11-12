@@ -104,6 +104,10 @@ func (m *MailYak) writeHeaders(buf io.Writer) error {
 		}
 	}
 
+	for k, v := range m.customHeaders {
+		fmt.Fprintf(buf, "%s: %s\r\n", k, v)
+	}
+	
 	return nil
 }
 
