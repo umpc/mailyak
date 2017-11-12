@@ -130,3 +130,19 @@ func (m *MailYak) ReplyTo(addr string) {
 func (m *MailYak) Subject(sub string) {
 	m.subject = m.trimRegex.ReplaceAllString(sub, "")
 }
+
+// SetHeader sets a custom header field name and value.
+// It is up to the caller to ensure that custom headers do not conflict with built-in headers.
+func (m *MailYak) SetHeader(name, value string) {
+	m.customHeaders[name] = value
+}
+
+// DeleteHeader removes a custom header field.
+func (m *MailYak) DeleteHeader(name string) {
+	delete(m.customHeaders, name)
+}
+
+// ClearHeaders removes all custom header fields.
+func (m *MailYak) ClearHeaders() {
+	m.customHeaders = make(map[string]string)
+}
