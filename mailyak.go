@@ -27,6 +27,7 @@ type MailYak struct {
 	trimRegex      *regexp.Regexp
 	host           string
 	writeBccHeader bool
+	customHeaders  map[string]string
 }
 
 // New returns an instance of MailYak using host as the SMTP server, and
@@ -47,6 +48,7 @@ func New(host string, auth smtp.Auth) *MailYak {
 		auth:           auth,
 		trimRegex:      regexp.MustCompile("\r?\n"),
 		writeBccHeader: false,
+		customHeaders:  make(map[string]string),
 	}
 }
 
@@ -92,7 +94,8 @@ func (m *MailYak) String() string {
 	}
 	return fmt.Sprintf(
 		"&MailYak{from: %q, fromName: %q, html: %v bytes, plain: %v bytes, toAddrs: %v, "+
-			"bccAddrs: %v, subject: %q, host: %q, attachments (%v): %v, auth set: %v}",
+			"bccAddrs: %v, subject: %q, host: %q, attachments (%v): %v, auth set: %v, "+
+			"custom headers: %v}",
 		m.fromAddr,
 		m.fromName,
 		len(m.HTML().String()),
@@ -104,6 +107,7 @@ func (m *MailYak) String() string {
 		len(att),
 		att,
 		m.auth != nil,
+		m.customHeaders,
 	)
 }
 
